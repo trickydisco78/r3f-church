@@ -56,7 +56,8 @@ export default function Viewport() {
       />
 
       <Suspense fallback={null}>
-        <Environment preset="park" environmentIntensity={0.7} />
+        {/* Hosted on this site (public/hdri), not fetched from a third-party CDN. Poly Haven, CC0. */}
+        <Environment files="/hdri/rooitou_park_1k.hdr" environmentIntensity={0.7} />
         <Church />
         <WindowLight />
         {objects.map((o) => (

@@ -28,6 +28,9 @@ import { useGLTF } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 
 const MODEL_URL = '/models/churchv-stained.glb'
+// The model is Draco-compressed. Serve the decoder from this site (public/draco) rather than Google's CDN.
+// Must run before the first load, which useGLTF.preload() below triggers.
+useGLTF.setDecoderPath('/draco/')
 /** Gold above this height (m) is the roof crosses; everything below is furnishings inside. */
 const ROOF_CROSS_MIN_Y = 7.5
 

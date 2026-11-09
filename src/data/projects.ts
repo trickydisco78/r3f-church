@@ -70,7 +70,7 @@ export const projects: Project[] = [
     year: "2026",
     description:
       "My design for a church, from first sketches to a 2D plan — which my dad then turned into a 3D model in Blender that you can explore in the browser.",
-    tags: ["School project", "Design", "Blender", "React Three Fiber"],
+    tags: ["School project", "Design", "RVE"],
     tone: "coral",
     mark: "RVE",
     image: {
