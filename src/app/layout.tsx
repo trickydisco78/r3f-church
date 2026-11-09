@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Caveat, Dancing_Script, Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Dancing_Script, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/data/site";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -40,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-theme="light"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${handwriting.variable} ${letterHand.variable} h-full antialiased`}
+      className={`${geistMono.variable} ${handwriting.variable} ${letterHand.variable} h-full antialiased`}
     >
       <head>
         {/* Sets the saved/system theme before first paint to avoid a flash (see lib/theme.ts). */}

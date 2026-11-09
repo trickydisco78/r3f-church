@@ -29,12 +29,16 @@ button { font: inherit; }
 .site-header[data-scrolled] .nav { border-bottom-color: transparent; }
 .site-header[data-hidden]:not(:focus-within) { transform: translateY(-100%); }
 [id] { scroll-margin-top: calc(var(--header-h, 88px) + 16px); }
-@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } .logo-mark { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } .logo-mark, .logo-initials, .logo-photo { transition: none; } }
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; border-bottom: 1px solid var(--border); }
 .wordmark { display: inline-flex; gap: 12px; align-items: center; font-size: 26px; font-weight: 700; letter-spacing: -.045em; line-height: 1; }
 .wordmark .wordmark-last { color: var(--muted-foreground); font-weight: 400; }
-.logo-mark { flex: none; display: grid; place-items: center; width: 52px; height: 52px; padding: 0 2px 5px 0; background: var(--accent); color: #fff; font-family: var(--font-handwritten), "Segoe Script", "Bradley Hand", cursive; font-weight: 700; font-size: 29px; letter-spacing: 0; line-height: 1; border-radius: 54% 46% 52% 48% / 48% 56% 44% 52%; transform: rotate(-6deg); transition: transform .3s cubic-bezier(.3,1.4,.5,1); }
+.logo-mark { flex: none; display: grid; place-items: center; width: 52px; height: 52px; padding: 0 2px 5px 0; background: var(--accent); color: #fff; font-family: var(--font-handwritten), "Segoe Script", "Bradley Hand", cursive; font-weight: 700; font-size: 29px; letter-spacing: 0; line-height: 1; border-radius: 54% 46% 52% 48% / 48% 56% 44% 52%; transform: rotate(-6deg); transition: transform .3s cubic-bezier(.3,1.4,.5,1); position: relative; overflow: hidden; isolation: isolate; }
 .wordmark:hover .logo-mark { transform: rotate(4deg) scale(1.06); }
+.logo-initials { transition: opacity .25s ease, transform .35s cubic-bezier(.3,1.4,.5,1); }
+.logo-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: rotate(6deg) scale(1.2); transition: opacity .3s ease, transform .35s cubic-bezier(.3,1.4,.5,1); }
+.logo-mark:hover .logo-initials, .wordmark:focus-visible .logo-initials { opacity: 0; transform: scale(.6); }
+.logo-mark:hover .logo-photo, .wordmark:focus-visible .logo-photo { opacity: 1; transform: rotate(-4deg) scale(1.15); }
 .nav-links { display: flex; align-items: center; gap: 30px; font-size: 13px; color: var(--muted-foreground); }
 .nav-links a:last-of-type { color: var(--ink); display: flex; align-items: center; gap: 5px; }
 .hero { padding: 132px 0 104px; }
@@ -155,3 +159,6 @@ html[data-theme="dark"] .portfolio .letter { box-shadow: 0 1px 2px rgba(0,0,0,.4
 @media (prefers-reduced-motion: reduce) {
   .portfolio .theme-toggle svg { transition: none; }
 }
+
+/* The header on its own (the 3D page): .portfolio normally fills the screen, this one is just the bar. */
+.portfolio.portfolio-bar { min-height: 0; }

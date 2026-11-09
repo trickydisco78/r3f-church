@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { site } from "@/data/site";
@@ -18,7 +19,9 @@ export function SiteNav({ base = "" }: { base?: "" | "/" }) {
       <nav className="nav container" aria-label="Primary navigation">
         <Link href="/" className="wordmark" aria-label={`${site.name} home`}>
           <span className="logo-mark" aria-hidden="true">
-            {initials}
+            <span className="logo-initials">{initials}</span>
+            {/* Shown instead of the initials when the logo is hovered (or the link is keyboard-focused). */}
+            <Image className="logo-photo" src="/images/rafe-icon.jpg" alt="" width={52} height={52} sizes="52px" loading="eager" />
           </span>
           <span className="wordmark-name">
             {first}
