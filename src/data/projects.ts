@@ -9,6 +9,15 @@ export interface ProjectImage {
   caption?: string;
 }
 
+/** A letter shown in the official-letter style (see components/portfolio/Letter.tsx). */
+export interface Letter {
+  from: string;
+  to: string;
+  salutation: string;
+  paragraphs: string[];
+  closing: string;
+}
+
 export interface Project {
   /** URL segment: the project page lives at /projects/<slug>. */
   slug?: string;
@@ -30,7 +39,7 @@ export interface Project {
   detail?: {
     intro: string;
     /** The task as it was set (paraphrased — don't paste third-party documents or names). */
-    brief?: { heading: string; text: string; requirementsHeading: string; requirements: string[]; stretch?: string; file?: { href: string; label: string; downloadName?: string } };
+    brief?: { heading: string; text: string; letter?: Letter; requirementsHeading: string; requirements: string[]; stretch?: string; file?: { href: string; label: string; downloadName?: string } };
     about: string[];
     /** Written answers to the brief, in his own words (spelling and punctuation tidied only). */
     answers?: {
@@ -75,7 +84,16 @@ export const projects: Project[] = [
         "The challenge: design a church that three different Christian groups could share. This is how I planned it and drew it, and how my dad turned it into a 3D model.",
       brief: {
         heading: "The brief",
-        text: "The challenge arrived as a letter from a church committee, asking an architect to design a church for at least three different Christian denominations — a building where people can worship and work together, and that will last well into the future.",
+        text: "The challenge arrived as a letter from a church committee:",
+        letter: {
+          from: "Church Committee",
+          to: "The Architect",
+          salutation: "Dear Architect,",
+          paragraphs: [
+            "We are writing to ask for your assistance in designing a building that will become a worldwide landmark. Various churches in Britain would like you to design a church for at least 3 different denominations. We believe that a building where we can worship and work together is a wonderful way of celebrating over 2000 years of Jesus Christ and we would like it to be a building that will survive well into the future. We do hope that you will be able to come up with a striking design that will be able to meet all of our various needs. We look forward to seeing your design.",
+          ],
+          closing: "Yours sincerely",
+        },
         requirementsHeading: "The project had to include",
         requirements: [
           "A creative name for the church",

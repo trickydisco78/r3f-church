@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, Download } from "lucide-react";
+import { Letter } from "@/components/portfolio/Letter";
 import { SiteFooter, SiteNav } from "@/components/portfolio/SiteChrome";
 import { getProject, projects, type ProjectImage } from "@/data/projects";
 import { site } from "@/data/site";
@@ -80,24 +81,27 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         {detail.brief && (
           <section className="detail-section detail-brief" aria-labelledby="brief-heading">
             <h2 id="brief-heading">{detail.brief.heading}</h2>
-            <div className="about-copy">
-              <p>{detail.brief.text}</p>
-              <h3 className="brief-sub">{detail.brief.requirementsHeading}</h3>
-              <ol className="brief-list">
-                {detail.brief.requirements.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ol>
-              {detail.brief.stretch && <p>{detail.brief.stretch}</p>}
-              {detail.brief.file && (
-                <a
-                  className="file-link"
-                  href={detail.brief.file.href}
-                  download={detail.brief.file.downloadName}
-                >
-                  <Download size={15} /> {detail.brief.file.label}
-                </a>
-              )}
+            <p className="detail-lead">{detail.brief.text}</p>
+            <div className="brief-grid">
+              {detail.brief.letter && <Letter letter={detail.brief.letter} />}
+              <div className="about-copy brief-side">
+                <h3 className="brief-sub">{detail.brief.requirementsHeading}</h3>
+                <ol className="brief-list">
+                  {detail.brief.requirements.map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ol>
+                {detail.brief.stretch && <p>{detail.brief.stretch}</p>}
+                {detail.brief.file && (
+                  <a
+                    className="file-link"
+                    href={detail.brief.file.href}
+                    download={detail.brief.file.downloadName}
+                  >
+                    <Download size={15} /> {detail.brief.file.label}
+                  </a>
+                )}
+              </div>
             </div>
           </section>
         )}
