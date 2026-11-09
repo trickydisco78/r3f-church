@@ -11,6 +11,10 @@ export interface CameraPreset {
 
 export const CAMERA_PRESETS = cameras as CameraPreset[];
 
+/** Camera the viewer starts on. */
+export const DEFAULT_CAMERA_ID = "Cam_Overview";
+export const DEFAULT_CAMERA = CAMERA_PRESETS.find((c) => c.id === DEFAULT_CAMERA_ID) ?? CAMERA_PRESETS[0];
+
 interface CameraState {
   /** Preset the rig is flying to; null when idle. */
   target: CameraPreset | null;
@@ -23,7 +27,7 @@ interface CameraState {
 
 export const useCameraStore = create<CameraState>()((set) => ({
   target: null,
-  current: null,
+  current: DEFAULT_CAMERA?.id ?? null,
   flyTo: (id) => {
     const preset = CAMERA_PRESETS.find((c) => c.id === id) ?? null;
     set({ target: preset, current: preset?.id ?? null });

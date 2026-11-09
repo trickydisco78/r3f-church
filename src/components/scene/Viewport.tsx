@@ -7,6 +7,11 @@ import { useSceneStore } from "@/store/scene-store";
 import { CameraRig } from "./CameraRig";
 import { SceneObjectMesh } from "./SceneObjectMesh";
 import { Church } from "@/components/models/Church";
+import { DEFAULT_CAMERA } from "@/store/camera-store";
+import { presetLookTarget } from "@/lib/camera-preset";
+
+const START_POSITION = DEFAULT_CAMERA.position;
+const START_TARGET = presetLookTarget(DEFAULT_CAMERA).toArray();
 
 export default function Viewport() {
   const objects = useSceneStore((s) => s.objects);
@@ -15,7 +20,7 @@ export default function Viewport() {
   return (
     <Canvas
       shadows
-      camera={{ position: [4, 3, 5], fov: 50 }}
+      camera={{ position: START_POSITION, fov: DEFAULT_CAMERA.fov }}
       onPointerMissed={() => select(null)}
     >
       <color attach="background" args={["#0b0b10"]} />
@@ -30,7 +35,7 @@ export default function Viewport() {
       </Suspense>
       <Grid infiniteGrid fadeDistance={30} cellColor="#2a2a3a" sectionColor="#4a4a6a" />
       <ContactShadows position={[0, 0.001, 0]} opacity={0.5} blur={2} far={4} />
-      <OrbitControls makeDefault maxPolarAngle={Math.PI / 2.05} />
+      <OrbitControls makeDefault target={START_TARGET} maxPolarAngle={Math.PI / 2.05} />
       <CameraRig />
       <EffectComposer>
         <Bloom intensity={0.3} luminanceThreshold={0.9} />
