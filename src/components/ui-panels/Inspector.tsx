@@ -35,6 +35,38 @@ export function Inspector() {
             ))}
           </div>
         </div>
+        <div className="space-y-1 border-t pt-2">
+          <p className="text-xs uppercase text-muted-foreground">Controls</p>
+          {/* Mouse instructions; hidden on touch devices, which get the list below instead. */}
+          <ul className="space-y-1 text-xs text-muted-foreground [@media(pointer:coarse)]:hidden">
+            <li>
+              <strong className="font-medium text-foreground">Left-click + drag</strong> to rotate the model
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Scroll</strong> to zoom in and out
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Right-click + drag</strong> to move it sideways
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Click the door</strong> to open or close it
+            </li>
+          </ul>
+          <ul className="hidden space-y-1 text-xs text-muted-foreground [@media(pointer:coarse)]:block">
+            <li>
+              <strong className="font-medium text-foreground">Drag</strong> with one finger to rotate the model
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Pinch</strong> to zoom in and out
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Drag with two fingers</strong> to move it sideways
+            </li>
+            <li>
+              <strong className="font-medium text-foreground">Tap the door</strong> to open or close it
+            </li>
+          </ul>
+        </div>
       </CardContent>
     </Card>
   );
