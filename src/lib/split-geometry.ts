@@ -1,11 +1,14 @@
 import * as THREE from "three";
 
 /**
- * Splits a mesh into the triangles whose centre is below `y` and those at or above it.
- * Used to separate the roof crosses from the rest of the merged `Gold` mesh, so they can be
- * hidden together with the roof. Keeps position and normal (the model's meshes carry no UVs).
+ * Splits a mesh into triangles for which `test(centreX, centreY, centreZ)` is false and true.
+ * Keeps position and normal (the model's meshes carry no UVs). Used to pull individual objects
+ * (roof crosses, door leaves) out of the model's merged meshes.
  */
-export function splitByHeight(source: THREE.BufferGeometry, y: number): [below: THREE.BufferGeometry, above: THREE.BufferGeometry] {
+export function splitBy(
+  source: THREE.BufferGeometry,
+  test: (x: number, y: number, z: number) => boolean,
+): [rest: THREE.BufferGeometry, picked: THREE.BufferGeometry] {
   const geo = source.index ? source.toNonIndexed() : source;
   const pos = geo.getAttribute("position");
   const nor = geo.getAttribute("normal");
@@ -13,8 +16,10 @@ export function splitByHeight(source: THREE.BufferGeometry, y: number): [below: 
   const hi = { p: [] as number[], n: [] as number[] };
 
   for (let t = 0; t < pos.count; t += 3) {
-    const centreY = (pos.getY(t) + pos.getY(t + 1) + pos.getY(t + 2)) / 3;
-    const bucket = centreY >= y ? hi : lo;
+    const cx = (pos.getX(t) + pos.getX(t + 1) + pos.getX(t + 2)) / 3;
+    const cy = (pos.getY(t) + pos.getY(t + 1) + pos.getY(t + 2)) / 3;
+    const cz = (pos.getZ(t) + pos.getZ(t + 1) + pos.getZ(t + 2)) / 3;
+    const bucket = test(cx, cy, cz) ? hi : lo;
     for (let k = t; k < t + 3; k++) {
       bucket.p.push(pos.getX(k), pos.getY(k), pos.getZ(k));
       if (nor) bucket.n.push(nor.getX(k), nor.getY(k), nor.getZ(k));
@@ -28,4 +33,9 @@ export function splitByHeight(source: THREE.BufferGeometry, y: number): [below: 
     return g;
   };
   return [build(lo), build(hi)];
+}
+
+/** Splits at height `y`: triangles below, and triangles at or above (e.g. the roof crosses). */
+export function splitByHeight(source: THREE.BufferGeometry, y: number) {
+  return splitBy(source, (_x, cy) => cy >= y);
 }

@@ -6,6 +6,7 @@ file and diff node/material names. Hand edits:
   - roof visibility toggle (isNodeVisible)
   - procedural textures + projected UVs for roof, pews and ground (those meshes have no UVs)
   - roof crosses split out of the merged Gold mesh (Gold_roof) so they hide with the roof
+  - the front double door: split into two leaves that swing open on click (Doors)
   - gable-end panels the model is missing under the Anglican roof (GableEnds)
   - candle flames (CandleFlames)
   - the coloured glass casts shadows so sunlight is only coloured by it (see WindowLight)
@@ -19,6 +20,7 @@ import { useMemo, type ComponentProps } from 'react'
 import { isNodeVisible, useChurchStore } from '@/store/church-store'
 import { CandleFlames } from './CandleFlames'
 import { GableEnds } from './GableEnds'
+import { Doors } from './Doors'
 import { withBoxUVs, withSlopeUVs } from '@/lib/box-uv'
 import { splitByHeight } from '@/lib/split-geometry'
 import { makeGrassTextures, makeRoofTileTextures, makeSlateTextures, makeWoodTextures } from '@/lib/procedural-textures'
@@ -117,7 +119,6 @@ export function Church(props: ComponentProps<'group'>) {
       <mesh name="Confess" visible={isNodeVisible("Confess", roof)} castShadow receiveShadow geometry={nodes.Confess.geometry} material={materials.Church_DarkWood} />
       <mesh name="Cube" visible={isNodeVisible("Cube", roof)} castShadow receiveShadow geometry={nodes.Cube.geometry} material={materials.Material} />
       <mesh name="Dome" visible={isNodeVisible("Dome", roof)} castShadow receiveShadow geometry={nodes.Dome.geometry} material={materials.Church_Gold} />
-      <mesh name="Door" visible={isNodeVisible("Door", roof)} castShadow receiveShadow geometry={nodes.Door.geometry} material={materials.Church_DarkWood} />
       <mesh name="Doorframe" visible={isNodeVisible("Doorframe", roof)} castShadow receiveShadow geometry={nodes.Doorframe.geometry} material={materials.Church_Stone} />
       <mesh name="Floor" visible={isNodeVisible("Floor", roof)} castShadow receiveShadow geometry={nodes.Floor.geometry} material={materials.Church_Stone} />
       <mesh name="Font" visible={isNodeVisible("Font", roof)} castShadow receiveShadow geometry={nodes.Font.geometry} material={materials.Church_Stone} />
@@ -127,7 +128,6 @@ export function Church(props: ComponentProps<'group'>) {
       <mesh name="Ground" visible={isNodeVisible("Ground", roof)} castShadow receiveShadow geometry={groundGeo}>
         <meshStandardMaterial map={grass.map} bumpMap={grass.bumpMap} bumpScale={3} roughness={1} />
       </mesh>
-      <mesh name="Ironmongery" visible={isNodeVisible("Ironmongery", roof)} castShadow receiveShadow geometry={nodes.Ironmongery.geometry} material={materials.Church_Brass} />
       <mesh name="Lead_cames" visible={isNodeVisible("Lead_cames", roof)} castShadow receiveShadow geometry={nodes.Lead_cames.geometry} material={materials.Church_SG_lead} />
       <mesh name="StainedGlass_amber" visible={isNodeVisible("StainedGlass_amber", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_amber.geometry} material={materials.Church_SG_amber} />
       <mesh name="StainedGlass_cobalt" visible={isNodeVisible("StainedGlass_cobalt", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_cobalt.geometry} material={materials.Church_SG_cobalt} />
@@ -163,6 +163,7 @@ export function Church(props: ComponentProps<'group'>) {
         const mesh = nodes[n as `Curve${string}`]
         return <mesh key={n} name={n} visible={isNodeVisible(n, roof)} receiveShadow geometry={mesh.geometry} material={mesh.material} />
       })}
+      <Doors doorGeometry={nodes.Door.geometry} handleGeometry={nodes.Ironmongery.geometry} doorMaterial={materials.Church_DarkWood} handleMaterial={materials.Church_Brass} />
       <GableEnds roofGeometry={nodes.Roof_ang.geometry} material={materials.Church_Plaster} />
       <CandleFlames geometry={nodes.Flame.geometry} />
     </group>
