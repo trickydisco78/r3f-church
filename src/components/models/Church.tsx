@@ -5,7 +5,10 @@ then hand-modified. Do NOT regenerate over this file; instead re-run gltfjsx to 
 file and diff node/material names. Hand edits:
   - roof visibility toggle (isNodeVisible)
   - procedural textures + projected UVs for roof, pews and ground (those meshes have no UVs)
+  - roof crosses split out of the merged Gold mesh (Gold_roof) so they hide with the roof
+  - gable-end panels the model is missing under the Anglican roof (GableEnds)
   - candle flames (CandleFlames)
+  - the coloured glass casts shadows so sunlight is only coloured by it (see WindowLight)
   - the 100+ decorative `Curve###` meshes are rendered in a loop with the file's own materials
   - the GLB's cameras are not rendered; camera views come from src/data/cameras.json
 The model is Draco-compressed; drei's useGLTF loads the decoder automatically.
@@ -15,12 +18,16 @@ import * as THREE from 'three'
 import { useMemo, type ComponentProps } from 'react'
 import { isNodeVisible, useChurchStore } from '@/store/church-store'
 import { CandleFlames } from './CandleFlames'
+import { GableEnds } from './GableEnds'
 import { withBoxUVs, withSlopeUVs } from '@/lib/box-uv'
+import { splitByHeight } from '@/lib/split-geometry'
 import { makeGrassTextures, makeRoofTileTextures, makeSlateTextures, makeWoodTextures } from '@/lib/procedural-textures'
 import { useGLTF } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 
 const MODEL_URL = '/models/churchv-stained.glb'
+/** Gold above this height (m) is the roof crosses; everything below is furnishings inside. */
+const ROOF_CROSS_MIN_Y = 7.5
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -98,6 +105,8 @@ export function Church(props: ComponentProps<'group'>) {
   }
   const wood = useMemo(() => makeWoodTextures(), [])
   const pewsGeo = useMemo(() => withBoxUVs(nodes.Pews.geometry, 1), [nodes])
+  // The crosses are merged into the Gold mesh; split them out so they hide with the roof.
+  const [goldGeo, roofCrossGeo] = useMemo(() => splitByHeight(nodes.Gold.geometry, ROOF_CROSS_MIN_Y), [nodes])
   const groundGeo = useMemo(() => withBoxUVs(nodes.Ground.geometry, 4), [nodes])
   const curveNames = useMemo(() => Object.keys(nodes).filter((n) => /^Curve\d*$/.test(n)), [nodes])
 
@@ -113,18 +122,19 @@ export function Church(props: ComponentProps<'group'>) {
       <mesh name="Floor" visible={isNodeVisible("Floor", roof)} castShadow receiveShadow geometry={nodes.Floor.geometry} material={materials.Church_Stone} />
       <mesh name="Font" visible={isNodeVisible("Font", roof)} castShadow receiveShadow geometry={nodes.Font.geometry} material={materials.Church_Stone} />
       <mesh name="Frontwall" visible={isNodeVisible("Frontwall", roof)} castShadow receiveShadow geometry={nodes.Frontwall.geometry} material={materials.Church_Plaster} />
-      <mesh name="Gold" visible={isNodeVisible("Gold", roof)} castShadow receiveShadow geometry={nodes.Gold.geometry} material={materials.Church_Gold} />
+      <mesh name="Gold" visible={isNodeVisible("Gold", roof)} castShadow receiveShadow geometry={goldGeo} material={materials.Church_Gold} />
+      <mesh name="Gold_roof" visible={isNodeVisible("Gold_roof", roof)} castShadow receiveShadow geometry={roofCrossGeo} material={materials.Church_Gold} />
       <mesh name="Ground" visible={isNodeVisible("Ground", roof)} castShadow receiveShadow geometry={groundGeo}>
         <meshStandardMaterial map={grass.map} bumpMap={grass.bumpMap} bumpScale={3} roughness={1} />
       </mesh>
       <mesh name="Ironmongery" visible={isNodeVisible("Ironmongery", roof)} castShadow receiveShadow geometry={nodes.Ironmongery.geometry} material={materials.Church_Brass} />
       <mesh name="Lead_cames" visible={isNodeVisible("Lead_cames", roof)} castShadow receiveShadow geometry={nodes.Lead_cames.geometry} material={materials.Church_SG_lead} />
-      <mesh name="StainedGlass_amber" visible={isNodeVisible("StainedGlass_amber", roof)} receiveShadow geometry={nodes.StainedGlass_amber.geometry} material={materials.Church_SG_amber} />
-      <mesh name="StainedGlass_cobalt" visible={isNodeVisible("StainedGlass_cobalt", roof)} receiveShadow geometry={nodes.StainedGlass_cobalt.geometry} material={materials.Church_SG_cobalt} />
-      <mesh name="StainedGlass_emerald" visible={isNodeVisible("StainedGlass_emerald", roof)} receiveShadow geometry={nodes.StainedGlass_emerald.geometry} material={materials.Church_SG_emerald} />
-      <mesh name="StainedGlass_ruby" visible={isNodeVisible("StainedGlass_ruby", roof)} receiveShadow geometry={nodes.StainedGlass_ruby.geometry} material={materials.Church_SG_ruby} />
-      <mesh name="StainedGlass_teal" visible={isNodeVisible("StainedGlass_teal", roof)} receiveShadow geometry={nodes.StainedGlass_teal.geometry} material={materials.Church_SG_teal} />
-      <mesh name="StainedGlass_violet" visible={isNodeVisible("StainedGlass_violet", roof)} receiveShadow geometry={nodes.StainedGlass_violet.geometry} material={materials.Church_SG_violet} />
+      <mesh name="StainedGlass_amber" visible={isNodeVisible("StainedGlass_amber", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_amber.geometry} material={materials.Church_SG_amber} />
+      <mesh name="StainedGlass_cobalt" visible={isNodeVisible("StainedGlass_cobalt", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_cobalt.geometry} material={materials.Church_SG_cobalt} />
+      <mesh name="StainedGlass_emerald" visible={isNodeVisible("StainedGlass_emerald", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_emerald.geometry} material={materials.Church_SG_emerald} />
+      <mesh name="StainedGlass_ruby" visible={isNodeVisible("StainedGlass_ruby", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_ruby.geometry} material={materials.Church_SG_ruby} />
+      <mesh name="StainedGlass_teal" visible={isNodeVisible("StainedGlass_teal", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_teal.geometry} material={materials.Church_SG_teal} />
+      <mesh name="StainedGlass_violet" visible={isNodeVisible("StainedGlass_violet", roof)} castShadow receiveShadow geometry={nodes.StainedGlass_violet.geometry} material={materials.Church_SG_violet} />
       <mesh name="Organ_case" visible={isNodeVisible("Organ_case", roof)} castShadow receiveShadow geometry={nodes.Organ_case.geometry} material={materials.Church_DarkWood} />
       <mesh name="Organ_pipes" visible={isNodeVisible("Organ_pipes", roof)} castShadow receiveShadow geometry={nodes.Organ_pipes.geometry} material={materials.Church_Silver} />
       <mesh name="Pews" visible={isNodeVisible("Pews", roof)} castShadow receiveShadow geometry={pewsGeo}>
@@ -153,6 +163,7 @@ export function Church(props: ComponentProps<'group'>) {
         const mesh = nodes[n as `Curve${string}`]
         return <mesh key={n} name={n} visible={isNodeVisible(n, roof)} receiveShadow geometry={mesh.geometry} material={mesh.material} />
       })}
+      <GableEnds roofGeometry={nodes.Roof_ang.geometry} material={materials.Church_Plaster} />
       <CandleFlames geometry={nodes.Flame.geometry} />
     </group>
   )
