@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { site } from "@/data/site";
+import { ThemeToggle } from "./ThemeToggle";
 
 /** `base` is "" on the home page and "/" on other pages so anchors resolve to the home page. */
 export function SiteNav({ base = "" }: { base?: "" | "/" }) {
@@ -21,6 +22,7 @@ export function SiteNav({ base = "" }: { base?: "" | "/" }) {
             Say hello <ArrowUpRight size={14} />
           </Link>
         )}
+        <ThemeToggle />
       </div>
     </nav>
   );
