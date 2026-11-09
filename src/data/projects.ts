@@ -30,7 +30,7 @@ export interface Project {
   detail?: {
     intro: string;
     /** The task as it was set (paraphrased — don't paste third-party documents or names). */
-    brief?: { heading: string; text: string; requirementsHeading: string; requirements: string[]; stretch?: string };
+    brief?: { heading: string; text: string; requirementsHeading: string; requirements: string[]; stretch?: string; file?: { href: string; label: string; downloadName?: string } };
     about: string[];
     /** The planning artefacts: sketches, mind maps, notes. */
     thinking?: { heading: string; text: string; images: ProjectImage[] };
@@ -55,7 +55,7 @@ export const projects: Project[] = [
     year: "2026",
     description:
       "My design for a church, from first sketches to a 2D plan — which my dad then turned into a 3D model in Blender that you can explore in the browser.",
-    tags: ["School project", "Design", "3D model"],
+    tags: ["School project", "Design", "Blender", "React Three Fiber"],
     tone: "coral",
     mark: "RVE",
     image: {
@@ -78,6 +78,11 @@ export const projects: Project[] = [
           "An explanation of why churches are important to Christians",
           "Information about the three Christian groups chosen",
         ],
+        file: {
+          href: "/images/church-brief.pdf",
+          label: "Read the brief (PDF)",
+          downloadName: "design-your-own-church-brief.pdf",
+        },
         stretch:
           "To go further: spaces for both quiet prayer and lively worship, space for the community, and a shape with a reason behind it.",
       },
@@ -119,7 +124,7 @@ export const projects: Project[] = [
       },
       model: {
         heading: "Explore it in 3D",
-        text: "Orbit around the outside, then step in and look at the details.",
+        text: "My dad did a degree in multimedia IT and used Blender as part of his university project work. He used new AI MCP tools to generate a 3D model from my 2D plan, then exported it into a web project using React Three Fiber. Orbit around the outside, then step in and look at the details.",
         label: "Open the 3D model",
         href: "/church",
       },

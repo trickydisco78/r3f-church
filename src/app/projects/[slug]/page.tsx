@@ -80,6 +80,15 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                 ))}
               </ol>
               {detail.brief.stretch && <p>{detail.brief.stretch}</p>}
+              {detail.brief.file && (
+                <a
+                  className="file-link"
+                  href={detail.brief.file.href}
+                  download={detail.brief.file.downloadName}
+                >
+                  <Download size={15} /> {detail.brief.file.label}
+                </a>
+              )}
             </div>
           </section>
         )}
