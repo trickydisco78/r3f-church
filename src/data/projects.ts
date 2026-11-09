@@ -32,6 +32,12 @@ export interface Project {
     /** The task as it was set (paraphrased — don't paste third-party documents or names). */
     brief?: { heading: string; text: string; requirementsHeading: string; requirements: string[]; stretch?: string; file?: { href: string; label: string; downloadName?: string } };
     about: string[];
+    /** Written answers to the brief, in his own words (spelling and punctuation tidied only). */
+    answers?: {
+      heading: string;
+      intro: string;
+      items: { eyebrow: string; heading: string; paragraphs?: string[]; groups?: { name: string; text: string }[] }[];
+    };
     /** The planning artefacts: sketches, mind maps, notes. */
     thinking?: { heading: string; text: string; images: ProjectImage[] };
     /** The finished 2D design(s). Section is hidden until images are added. */
@@ -91,9 +97,50 @@ export const projects: Project[] = [
         "My answer is The United Church: three hexagons that share edges and meet at a single point. Each area keeps its own tradition, while the font and the front door are shared by everyone. Hexagons fit together with no gaps, so three areas become one building.",
         "I sketched the layouts and drew the plan, and then my dad turned my 2D design into a 3D model using Blender.",
       ],
+      answers: {
+        heading: "My answers to the brief",
+        intro: "The written part of the project, in my own words.",
+        items: [
+          {
+            eyebrow: "Brief point 3",
+            heading: "Why I designed it this way",
+            paragraphs: [
+              "I designed my church differently because I wanted my church to be different to other churches. The sacred space is the most important part, so that people can come together.",
+              "I designed it using hexagon shapes so there is more room for people to sit in the church, and so that you have your individual denomination in different rooms.",
+              "I put in an organ so they can have music, church pews so they can sit, confessionals so they can confess, and candles so they can remember their loved ones.",
+            ],
+          },
+          {
+            eyebrow: "Brief point 4",
+            heading: "Why churches are important to Christians",
+            paragraphs: [
+              "Churches are important to Christians because churches are a place of worship, a place of community and a place of support. Also, you can go there if you want to start a new life.",
+              "Christians also have celebrations such as Christmas and Easter, and sometimes weddings or funerals.",
+            ],
+          },
+          {
+            eyebrow: "Brief point 5",
+            heading: "The three Christian groups",
+            groups: [
+              {
+                name: "Roman Catholic",
+                text: "They are the biggest denomination, with over 1.2 billion members in the world. They look to Mary and the saints as role models. Roman Catholicism is based on 7 sacraments. A sacrament is a ritual that demonstrates God's grace and builds faith. The seven sacraments are baptism, eucharist, confirmation, reconciliation, anointing of the sick, marriage and holy orders.",
+              },
+              {
+                name: "Orthodox",
+                text: "They have around 200 million people who follow the Orthodox tradition. It is made up of a number of self-choice churches. They sing and chant a lot and they have lots of statues and icons. Most of their churches have a dome-shaped ceiling.",
+              },
+              {
+                name: "Anglican",
+                text: "Anglicans are the third biggest denomination, with around 110 million members in the world. They love singing hymns and music. They follow a set order and it is a mix of formal and informal worship.",
+              },
+            ],
+          },
+        ],
+      },
       thinking: {
         heading: "Thinking & planning",
-        text: "My working notes: comparing the three traditions, mind-mapping what matters in each, and sketching floor plans and shapes to see what could work.",
+        text: "My working notes: comparing the three traditions, mind-mapping what matters in each, sketching floor plans and shapes to see what could work, and writing up what I found out. Select a photo to see it full size.",
         images: [
           {
             src: "/images/church-sketches.jpg",
@@ -101,6 +148,27 @@ export const projects: Project[] = [
             width: 1024,
             height: 768,
             caption: "Mind maps, comparison notes and early floor-plan sketches.",
+          },
+          {
+            src: "/images/church-notes-groups.jpg",
+            alt: "Handwritten notes about the three Christian groups: Roman Catholic, Orthodox and Anglican, with the size of each and what is special about their worship",
+            width: 2048,
+            height: 1536,
+            caption: "Research notes on the three Christian groups.",
+          },
+          {
+            src: "/images/church-notes-importance.jpg",
+            alt: "Handwritten notes on why churches are important to Christians, followed by the start of the notes on the Roman Catholic and Orthodox groups",
+            width: 2048,
+            height: 1536,
+            caption: "Why churches are important to Christians.",
+          },
+          {
+            src: "/images/church-notes-design.jpg",
+            alt: "Handwritten page titled Explanation of my church design, explaining the hexagon shapes, organ, pews, confessionals and candles",
+            width: 2048,
+            height: 1536,
+            caption: "My explanation of the church design.",
           },
         ],
       },

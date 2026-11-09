@@ -22,17 +22,26 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   };
 }
 
-function Figure({ image }: { image: ProjectImage }) {
+function Figure({ image, zoom = false }: { image: ProjectImage; zoom?: boolean }) {
+  const img = (
+    <Image
+      src={image.src}
+      alt={image.alt}
+      width={image.width}
+      height={image.height}
+      sizes="(max-width: 700px) 100vw, 1116px"
+      className="detail-img"
+    />
+  );
   return (
     <figure className="detail-figure">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        width={image.width}
-        height={image.height}
-        sizes="(max-width: 700px) 100vw, 1116px"
-        className="detail-img"
-      />
+      {zoom ? (
+        <a href={image.src} target="_blank" rel="noreferrer" className="zoom-link" aria-label={`Open full size: ${image.caption ?? image.alt}`}>
+          {img}
+        </a>
+      ) : (
+        img
+      )}
       {image.caption && <figcaption>{image.caption}</figcaption>}
     </figure>
   );
@@ -106,8 +115,40 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <section className="detail-section" aria-labelledby="thinking-heading">
             <h2 id="thinking-heading">{detail.thinking.heading}</h2>
             <p className="detail-lead">{detail.thinking.text}</p>
-            {detail.thinking.images.map((img) => (
-              <Figure key={img.src} image={img} />
+            <div className="detail-gallery">
+              {detail.thinking.images.map((img) => (
+                <Figure key={img.src} image={img} zoom />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {detail.answers && (
+          <section className="detail-section" aria-labelledby="answers-heading">
+            <h2 id="answers-heading">{detail.answers.heading}</h2>
+            <p className="detail-lead">{detail.answers.intro}</p>
+            {detail.answers.items.map((item) => (
+              <div className="answer" key={item.heading}>
+                <div>
+                  <span className="eyebrow">{item.eyebrow}</span>
+                  <h3>{item.heading}</h3>
+                </div>
+                <div className="about-copy">
+                  {item.paragraphs?.map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
+                  {item.groups && (
+                    <dl className="groups">
+                      {item.groups.map((g) => (
+                        <div key={g.name}>
+                          <dt>{g.name}</dt>
+                          <dd>{g.text}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                </div>
+              </div>
             ))}
           </section>
         )}

@@ -86,8 +86,23 @@ h1 em, h2 em { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.
   .detail-brief { display: grid; grid-template-columns: 1.15fr .85fr; gap: 9%; }
   .detail-brief .about-copy { max-width: 520px; padding-top: 6px; }
   .brief-sub { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 400; margin: 28px 0 14px; }
-  .brief-list { margin: 0 0 22px; padding-left: 20px; color: var(--muted-foreground); font-size: 15px; line-height: 1.6; }
-  .brief-list li { padding-left: 4px; margin-bottom: 6px; }
+  .brief-list { list-style: decimal outside; margin: 0 0 22px; padding-left: 22px; color: var(--muted-foreground); font-size: 15px; line-height: 1.6; }
+  .brief-list li { padding-left: 6px; margin-bottom: 6px; }
+  .brief-list li::marker { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .detail-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 24px; }
+  .detail-gallery .detail-figure:first-child,
+  .detail-gallery .detail-figure:last-child:nth-child(even) { grid-column: 1 / -1; }
+  .zoom-link { display: block; border-radius: var(--radius); }
+  .zoom-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .zoom-link:hover .detail-img { filter: brightness(.97); }
+  .answer { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6%; padding: 34px 0; border-top: 1px solid var(--border); }
+  .answer:first-of-type { margin-top: 10px; }
+  .answer h3 { font-size: clamp(24px, 2.6vw, 34px); line-height: 1.05; letter-spacing: -.05em; margin-top: 14px; max-width: 360px; }
+  .answer .about-copy { max-width: 560px; padding-top: 4px; }
+  .groups { margin: 0; }
+  .groups > div { margin-bottom: 24px; }
+  .groups dt { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+  .groups dd { margin: 0; color: var(--muted-foreground); font-size: 15px; line-height: 1.6; }
   .detail-model .contact-button { margin-top: 0; }
-  @media (max-width: 700px) { .detail { padding: 36px 0 80px; } .detail-section { margin-top: 64px; } .detail-about, .detail-brief { grid-template-columns: 1fr; gap: 10px; } }
+  @media (max-width: 700px) { .detail { padding: 36px 0 80px; } .detail-section { margin-top: 64px; } .detail-about, .detail-brief { grid-template-columns: 1fr; gap: 10px; } .detail-gallery { grid-template-columns: 1fr; } .answer { grid-template-columns: 1fr; gap: 14px; padding: 28px 0; } }
 }
